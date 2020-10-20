@@ -31,6 +31,7 @@ class ToDoListAdapter (
         fun bind(listObject: ListObject) {
             binding.title.text = listObject.title
             binding.deadLine.text = listObject.deadLine
+            binding.createdTime.text = listObject.createdTime
             binding.memo.text = listObject.memo
         }
     }

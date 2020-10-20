@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import io.realm.Realm
 import kaz_furniture.todoapplication.ListObject
 import kaz_furniture.todoapplication.R
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddActivity : AppCompatActivity() {
@@ -56,9 +57,15 @@ class AddActivity : AppCompatActivity() {
             listObject.title = titleSnapshot
             listObject.deadLine = deadTimeSnapshot
             listObject.memo = memoSnapshot
-            listObject.createdTime = Date()
+            listObject.createdTime = getDate()
             realm.copyToRealm(listObject)
         }
+    }
+    private fun getDate() : String{
+        val date = Date()
+        val format = SimpleDateFormat("yyyy/MM/dd HH:mm::ss", Locale.ENGLISH)
+        return format.format(date)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
