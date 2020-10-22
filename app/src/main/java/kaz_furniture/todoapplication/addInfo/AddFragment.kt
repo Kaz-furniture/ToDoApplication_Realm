@@ -4,20 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.activityViewModels
 import kaz_furniture.todoapplication.R
 import kaz_furniture.todoapplication.databinding.FragmentAddBinding
 
 class AddFragment : Fragment(R.layout.fragment_add) {
-    companion object {
-        fun newInstance() : AddFragment {
-            return AddFragment()
-        }
-    }
+
+    private val viewModel: AddViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -31,6 +27,10 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         val bindingData: FragmentAddBinding? = DataBindingUtil.bind(view)
         binding = bindingData ?: return
         bindingData.lifecycleOwner = viewLifecycleOwner
+        binding?.viewModel = viewModel
+        binding?.saveButton?.setOnClickListener {
+            viewModel.createObject()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -44,5 +44,9 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         binding?.unbind()
     }
 
-
+    companion object {
+        fun newInstance() : AddFragment {
+            return AddFragment()
+        }
+    }
 }

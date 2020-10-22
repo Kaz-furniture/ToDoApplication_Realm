@@ -1,91 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
-            name="addInfo"
-            type="kaz_furniture.todoapplication.addInfo.AddActivity" />
+            name="viewModel"
+            type="kaz_furniture.todoapplication.addInfo.AddViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="#ffe4e1"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#ffe4e1">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="タイトル"
-            android:id="@+id/title"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp" />
+            android:text="タイトル"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/title_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="タイトルを入力"
-            android:text="@={addInfo.title}"
-            android:textSize="22sp"
-            app:layout_constraintTop_toBottomOf="@id/title"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="10dp"
+            android:hint="タイトルを入力"
+            android:text="@={viewModel.title}"
+            android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
         <TextView
+            android:id="@+id/dead_line"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="〆切日時"
-            android:id="@+id/dead_line"
-            app:layout_constraintTop_toBottomOf="@id/title_input"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="30dp"
-            android:layout_marginStart="10dp" />
+            android:text="〆切日時"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_input" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/dead_line_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="〆切日時を入力"
-            android:text="@={addInfo.deadTime}"
-            app:layout_constraintTop_toBottomOf="@+id/dead_line"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:hint="〆切日時を入力"
+            android:text="@={viewModel.deadTime}"
+            app:layout_constraintTop_toBottomOf="@+id/dead_line" />
 
         <TextView
+            android:id="@+id/memo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="備考"
-            android:id="@+id/memo"
-            app:layout_constraintTop_toBottomOf="@id/dead_line_input"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="30dp"
-            android:layout_marginStart="10dp" />
+            android:text="備考"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dead_line_input" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/memo_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="備考を入力（任意）"
-            android:text="@={addInfo.memo}"
-            app:layout_constraintTop_toBottomOf="@+id/memo"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:hint="備考を入力（任意）"
+            android:text="@={viewModel.memo}"
+            app:layout_constraintTop_toBottomOf="@+id/memo" />
 
 
-
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:enabled="@{viewModel.canSubmit}"
+            android:text="save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
