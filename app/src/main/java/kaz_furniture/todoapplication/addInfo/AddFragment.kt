@@ -6,9 +6,13 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import kaz_furniture.todoapplication.R
 import kaz_furniture.todoapplication.databinding.FragmentAddBinding
 
@@ -18,6 +22,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             return AddFragment()
         }
     }
+
+    private val viewModel: AddViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -31,6 +37,11 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         val bindingData: FragmentAddBinding? = DataBindingUtil.bind(view)
         binding = bindingData ?: return
         bindingData.lifecycleOwner = viewLifecycleOwner
+        binding?.viewModel = viewModel
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(view, it, Snackbar.LENGTH_LONG).show()
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

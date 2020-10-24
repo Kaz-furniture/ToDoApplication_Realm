@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="addInfo"
-            type="kaz_furniture.todoapplication.addInfo.AddActivity" />
+            name="viewModel"
+            type="kaz_furniture.todoapplication.addInfo.AddViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="タイトルを入力"
-            android:text="@={addInfo.title}"
+            android:text="@={viewModel.title}"
             android:textSize="22sp"
             app:layout_constraintTop_toBottomOf="@id/title"
             android:layout_marginStart="10dp"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="〆切日時を入力"
-            android:text="@={addInfo.deadTime}"
+            android:text="@={viewModel.deadTime}"
             app:layout_constraintTop_toBottomOf="@+id/dead_line"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="備考を入力（任意）"
-            android:text="@={addInfo.memo}"
+            android:text="@={viewModel.memo}"
             app:layout_constraintTop_toBottomOf="@+id/memo"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"

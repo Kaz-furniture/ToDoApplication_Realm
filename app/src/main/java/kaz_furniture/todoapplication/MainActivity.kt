@@ -21,17 +21,6 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
-        Realm.init(this)
-        val config = RealmConfiguration.Builder()
-            .build()
-        Realm.setDefaultConfiguration(config)
     }
 
-    override fun onResume() {
-        super.onResume()
-//        Realm.init(this)
-//        val realm= Realm.getDefaultInstance()
-//        val query = realm.where(ListObject::class.java)
-//        val result = query.findAll()
-    }
 }
