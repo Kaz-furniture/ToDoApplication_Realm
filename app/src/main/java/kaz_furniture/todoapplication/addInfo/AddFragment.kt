@@ -25,9 +25,19 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
     private val viewModel: AddViewModel by activityViewModels()
 
+    interface Callback {
+        fun createCompleted()
+    }
+
+    private var callback: Callback? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
+
+        if (context is Callback) {
+            callback = context
+        }
     }
 
     private var binding: FragmentAddBinding? = null
@@ -38,6 +48,11 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         binding = bindingData ?: return
         bindingData.lifecycleOwner = viewLifecycleOwner
         binding?.viewModel = viewModel
+
+        viewModel.createComplete.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireContext(),"登録できました",Toast.LENGTH_LONG).show()
+            callback?.createCompleted()
+        })
 
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
             Snackbar.make(view, it, Snackbar.LENGTH_LONG).show()

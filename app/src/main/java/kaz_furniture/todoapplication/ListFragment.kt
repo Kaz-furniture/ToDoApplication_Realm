@@ -26,7 +26,7 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list) {
         private const val REQUEST_CODE_ADD = 1000
     }
 
-    fun loadList(toDoList: ArrayList<ListObject>) {
+    private fun loadList(toDoList: ArrayList<ListObject>) {
         binding?.swipeRefresh?.isRefreshing =true
         val fetchedList = read()
         toDoList.addAll(fetchedList)
@@ -62,11 +62,15 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list) {
 
     }
 
-    fun read(): List<ListObject> {
-//        val realm = Realm.getDefaultInstance()
-        return Realm.getDefaultInstance().where(ListObject::class.java).findAll()
+    private fun read(): List<ListObject> =
+        Realm.getDefaultInstance().use { realm->
+            realm.where(ListObject::class.java)
+            .isNull(ListObject::deletedAt.name)
+            .findAll()
+            .let { realm.copyFromRealm(it) }
+        }
 
-    }
+
 
     private fun launchAddActivity() {
         val intent = AddActivity.newIntent(requireContext())

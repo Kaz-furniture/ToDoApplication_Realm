@@ -1,5 +1,6 @@
 package kaz_furniture.todoapplication.addInfo
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -16,7 +17,7 @@ import kaz_furniture.todoapplication.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddActivity : AppCompatActivity() {
+class AddActivity : AppCompatActivity(),AddFragment.Callback {
     companion object{
         fun newIntent(context: Context): Intent {
             return Intent(context, AddActivity::class.java)
@@ -40,6 +41,11 @@ class AddActivity : AppCompatActivity() {
                 .replace(R.id.fragment_container,fragment)
                 .commit()
         }
+    }
+
+    override fun createCompleted() {
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -15,5 +15,7 @@ open class ListObject : RealmObject() {
     @Required
     var deadLine = ""
 
-    var createdTime  = ""
+    var deletedAt : Date? = null
+
+    var createdTime :Date? = null
 }
