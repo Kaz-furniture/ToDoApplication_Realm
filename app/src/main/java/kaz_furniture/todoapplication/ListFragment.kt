@@ -13,8 +13,10 @@ import io.realm.RealmResults
 import kaz_furniture.todoapplication.addInfo.AddActivity
 import kaz_furniture.todoapplication.databinding.FragmentMainBinding
 import kaz_furniture.todoapplication.databinding.FragmentToDoListBinding
+import kaz_furniture.todoapplication.editInfo.EditActivity
+import kaz_furniture.todoapplication.editInfo.EditFragment
 
-class ListFragment : Fragment(R.layout.fragment_to_do_list) {
+class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Callback {
     private var binding : FragmentToDoListBinding? = null
 
     private lateinit var adapter : ToDoListAdapter
@@ -36,7 +38,7 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ToDoListAdapter(layoutInflater, toDoList)
+        adapter = ToDoListAdapter(layoutInflater, toDoList, this)
 
         loadList(toDoList)
         layoutManager = LinearLayoutManager(
@@ -45,6 +47,7 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list) {
             false
         )
         val bindingData : FragmentToDoListBinding? = DataBindingUtil.bind(view)
+
         binding = bindingData ?:return
 
         bindingData.recyclerView.also {
@@ -59,7 +62,15 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list) {
         bindingData.fab.setOnClickListener{
             launchAddActivity()
         }
+    }
 
+    override fun loadListNext() {
+        loadList(toDoList)
+    }
+
+    override fun openEdit(listObject: ListObject) {
+        val intent = EditActivity.newIntent(requireContext(),listObject)
+        startActivity(intent)
     }
 
     private fun read(): List<ListObject> =
@@ -69,8 +80,6 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list) {
             .findAll()
             .let { realm.copyFromRealm(it) }
         }
-
-
 
     private fun launchAddActivity() {
         val intent = AddActivity.newIntent(requireContext())

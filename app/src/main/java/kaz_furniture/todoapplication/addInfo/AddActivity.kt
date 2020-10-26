@@ -30,11 +30,6 @@ class AddActivity : AppCompatActivity(),AddFragment.Callback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_info)
 
-        Realm.init(this)
-        val config = RealmConfiguration.Builder()
-            .build()
-        Realm.setDefaultConfiguration(config)
-
         if (savedInstanceState == null) {
             val fragment = AddFragment.newInstance()
             supportFragmentManager.beginTransaction()

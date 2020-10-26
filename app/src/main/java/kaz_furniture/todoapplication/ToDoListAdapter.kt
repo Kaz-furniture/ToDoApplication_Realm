@@ -8,13 +8,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import kaz_furniture.todoapplication.databinding.ListItemBinding
+import kaz_furniture.todoapplication.editInfo.EditActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ToDoListAdapter (
     private val layoutInflater: LayoutInflater,
-    private val toDoList: ArrayList<ListObject>
+    private val toDoList: ArrayList<ListObject>,
+    private val callback: Callback?
 ) :RecyclerView.Adapter<ToDoListAdapter.ViewHolder>() {
+
+    interface Callback {
+        fun loadListNext()
+        fun openEdit(listObject: ListObject)
+    }
+
     override fun getItemCount() = toDoList.size
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate<ListItemBinding>(
@@ -23,7 +31,7 @@ class ToDoListAdapter (
             parent,
             false
         )
-        return ViewHolder(binding)
+        return ViewHolder(binding,callback)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -31,7 +39,8 @@ class ToDoListAdapter (
     }
 
     class ViewHolder(
-        private val binding: ListItemBinding
+        private val binding: ListItemBinding,
+        private val callback: Callback?
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private fun insertOrUpdate(data: ListObject) {
@@ -55,6 +64,7 @@ class ToDoListAdapter (
                     deletedAt = Date()
                 })
             }
+            callback?.loadListNext()
         }
 
         fun bind(listObject: ListObject) {
@@ -70,7 +80,8 @@ class ToDoListAdapter (
                     )
                     popupMenu.setOnMenuItemClickListener { menuItem ->
                         when(menuItem.itemId) {
-                            R.id.menu_button -> delete(listObject.id)
+                            R.id.menu_delete -> delete(listObject.id)
+                            R.id.menu_edit -> callback?.openEdit(listObject)
                         }
                         return@setOnMenuItemClickListener true
                     }
@@ -79,4 +90,6 @@ class ToDoListAdapter (
         }
 
     }
+
+
 }
