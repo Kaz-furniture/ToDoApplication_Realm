@@ -67,11 +67,30 @@ class ToDoListAdapter (
             callback?.loadListNext()
         }
 
+        private fun finished(id: String) {
+            findById(id)?.also {
+                insertOrUpdate(it.apply {
+                    finished = true
+                })
+            }
+            callback?.loadListNext()
+        }
+
+        private fun reDo(id: String) {
+            findById(id)?.also {
+                insertOrUpdate(it.apply {
+                    finished = false
+                })
+            }
+            callback?.loadListNext()
+        }
+
         fun bind(listObject: ListObject) {
             binding.title.text = listObject.title
             binding.deadLine.text = listObject.deadLine
             binding.createdTime.text = listObject.createdTime.toString()
             binding.memo.text = listObject.memo
+            binding.finished.isEnabled  = listObject.finished
             binding.more.setOnClickListener {
                 PopupMenu(itemView.context, it).also {  popupMenu ->
                     popupMenu.menuInflater.inflate(
@@ -82,6 +101,8 @@ class ToDoListAdapter (
                         when(menuItem.itemId) {
                             R.id.menu_delete -> delete(listObject.id)
                             R.id.menu_edit -> callback?.openEdit(listObject)
+                            R.id.menu_finished -> finished(listObject.id)
+                            R.id.menu_reDo -> reDo(listObject.id)
                         }
                         return@setOnMenuItemClickListener true
                     }

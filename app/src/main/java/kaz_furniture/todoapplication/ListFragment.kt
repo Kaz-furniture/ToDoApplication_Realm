@@ -68,6 +68,7 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
     }
 
     override fun loadListNext() {
+        toDoList.clear()
         loadList(toDoList)
     }
 

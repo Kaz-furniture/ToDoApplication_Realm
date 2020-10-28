@@ -14,9 +14,9 @@
         app:tabMaxWidth="0dp"
         app:tabIndicatorColor="@android:color/black"
         app:tabIndicatorHeight="5dp"
-        android:background="#dddddd"
+        android:background="#ffc7af"
         app:tabSelectedTextColor="@android:color/holo_red_light"
-        android:layout_height="60dp" />
+        android:layout_height="40dp" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"

@@ -22,4 +22,6 @@ open class ListObject : RealmObject(),Parcelable {
     var deletedAt : Date? = null
 
     var createdTime :Date? = null
+
+    var finished :Boolean = false
 }

@@ -8,4 +8,12 @@
     <item
         android:id="@+id/menu_edit"
         android:title="EDIT"/>
+
+    <item
+        android:id="@+id/menu_finished"
+        android:title="FINISHED"/>
+
+    <item
+        android:id="@+id/menu_reDo"
+        android:title="REDO"/>
 </menu>
