@@ -2,22 +2,18 @@ package kaz_furniture.todoapplication
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import io.realm.Realm
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.realm.RealmResults
+import io.realm.Realm
 import kaz_furniture.todoapplication.addInfo.AddActivity
-import kaz_furniture.todoapplication.databinding.FragmentMainBinding
+import kaz_furniture.todoapplication.databinding.FragmentSecondListBinding
 import kaz_furniture.todoapplication.databinding.FragmentToDoListBinding
 import kaz_furniture.todoapplication.editInfo.EditActivity
-import kaz_furniture.todoapplication.editInfo.EditFragment
 
-class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Callback {
-    private var binding : FragmentToDoListBinding? = null
+class ListFragmentSecond: Fragment(R.layout.fragment_second_list), ToDoListAdapter.Callback {
+    private var binding : FragmentSecondListBinding? = null
 
     private lateinit var adapter : ToDoListAdapter
     private lateinit var layoutManager: LinearLayoutManager
@@ -26,8 +22,8 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
 
     companion object {
         private const val REQUEST_CODE_ADD = 1000
-        fun create(): ListFragment {
-            return ListFragment()
+        fun create(): ListFragmentSecond {
+            return ListFragmentSecond()
         }
     }
 
@@ -49,7 +45,7 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
             LinearLayoutManager.VERTICAL,
             false
         )
-        val bindingData : FragmentToDoListBinding? = DataBindingUtil.bind(view)
+        val bindingData : FragmentSecondListBinding? = DataBindingUtil.bind(view)
 
         binding = bindingData ?:return
 
@@ -79,9 +75,9 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
     private fun read(): List<ListObject> =
         Realm.getDefaultInstance().use { realm->
             realm.where(ListObject::class.java)
-            .isNull(ListObject::deletedAt.name)
-            .findAll()
-            .let { realm.copyFromRealm(it) }
+                .isNull(ListObject::deletedAt.name)
+                .findAll()
+                .let { realm.copyFromRealm(it) }
         }
 
     private fun launchAddActivity() {

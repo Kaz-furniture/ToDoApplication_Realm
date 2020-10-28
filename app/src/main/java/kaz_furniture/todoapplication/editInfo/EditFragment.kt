@@ -14,16 +14,17 @@ import kaz_furniture.todoapplication.ListObject
 import kaz_furniture.todoapplication.R
 import kaz_furniture.todoapplication.databinding.FragmentEditBinding
 import kaz_furniture.todoapplication.databinding.FragmentToDoListBinding
+import timber.log.Timber
 
 class EditFragment : Fragment(R.layout.fragment_edit) {
     companion object{
         val TAG = EditFragment::class.java.simpleName
         private var listObject :ListObject? = null
-        private const val KEY = "key"
+        private const val KEYFragment = "keyFragment"
 
         fun newInstance(listObject: ListObject) : EditFragment {
             val args = Bundle().apply {
-                putParcelable(KEY, listObject)
+                putParcelable(KEYFragment, listObject)
             }
             return EditFragment().apply {
                 arguments = args
@@ -41,7 +42,9 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireArguments().also {
-            listObject = it.getParcelable(KEY)
+            listObject = it.getParcelable(KEYFragment)
+            Timber.d("listObject:${listObject}")
+            Timber.d("listObject.title:${listObject?.title}")
         }
         title = listObject?.title ?:return
         deadLine = listObject?.deadLine ?:return

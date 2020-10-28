@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kaz_furniture.todoapplication.ListObject
 import kaz_furniture.todoapplication.R
 import kaz_furniture.todoapplication.addInfo.AddViewModel
+import timber.log.Timber
 
 class EditActivity : AppCompatActivity() {
 
@@ -26,7 +27,9 @@ class EditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-        val list = intent?.getParcelableExtra<ListObject>(KEY) ?:return
+        val list = intent?.extras?.getParcelable<ListObject>(KEY) ?:return
+        Timber.d("listObjectActivity:${list}")
+        Timber.d("listObject.titleActivity:${list.title}")
 
         if (savedInstanceState == null) {
             val fragment = EditFragment.newInstance(list)

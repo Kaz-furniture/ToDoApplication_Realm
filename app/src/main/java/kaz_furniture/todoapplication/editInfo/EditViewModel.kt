@@ -37,6 +37,7 @@ class EditViewModel : ViewModel() {
                 }
             })
         }
+        
     }
 
     private fun insertOrUpdate(data: ListObject) {
