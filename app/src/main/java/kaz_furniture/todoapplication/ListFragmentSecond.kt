@@ -11,6 +11,7 @@ import kaz_furniture.todoapplication.addInfo.AddActivity
 import kaz_furniture.todoapplication.databinding.FragmentSecondListBinding
 import kaz_furniture.todoapplication.databinding.FragmentToDoListBinding
 import kaz_furniture.todoapplication.editInfo.EditActivity
+import kotlinx.android.synthetic.main.list_item.*
 
 class ListFragmentSecond: Fragment(R.layout.fragment_second_list), ToDoListAdapter.Callback {
     private var binding : FragmentSecondListBinding? = null
@@ -76,6 +77,7 @@ class ListFragmentSecond: Fragment(R.layout.fragment_second_list), ToDoListAdapt
         Realm.getDefaultInstance().use { realm->
             realm.where(ListObject::class.java)
                 .isNull(ListObject::deletedAt.name)
+                .equalTo(ListObject::finished.name, false)
                 .findAll()
                 .let { realm.copyFromRealm(it) }
         }

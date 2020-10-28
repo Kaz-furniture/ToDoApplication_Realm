@@ -76,6 +76,7 @@ class ListFragmentThird: Fragment(R.layout.fragment_third_list), ToDoListAdapter
         Realm.getDefaultInstance().use { realm->
             realm.where(ListObject::class.java)
                 .isNull(ListObject::deletedAt.name)
+                .equalTo(ListObject::finished.name, true)
                 .findAll()
                 .let { realm.copyFromRealm(it) }
         }
