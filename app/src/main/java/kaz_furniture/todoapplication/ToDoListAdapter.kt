@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import kaz_furniture.todoapplication.databinding.ListItemBinding
 import kaz_furniture.todoapplication.editInfo.EditActivity
+import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,6 +44,8 @@ class ToDoListAdapter (
         private val callback: Callback?
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private val isChanging = MutableLiveData<Boolean>(false)
+
         private fun insertOrUpdate(data: ListObject) {
             Realm.getDefaultInstance().executeTransaction {
                 it.insertOrUpdate(data)
@@ -59,36 +62,40 @@ class ToDoListAdapter (
             }
 
         private fun delete(id: String) {
+            isChanging.postValue(true)
             findById(id)?.also {
                 insertOrUpdate(it.apply {
                     deletedAt = Date()
                 })
             }
-            callback?.loadListNext()
+            isChanging.postValue(false)
+//            callback?.loadListNext()
         }
 
         private fun finished(id: String) {
+            isChanging.postValue(true)
             findById(id)?.also {
                 insertOrUpdate(it.apply {
                     finished = true
                 })
             }
-            callback?.loadListNext()
+            isChanging.postValue(false)
         }
 
         private fun reDo(id: String) {
+            isChanging.postValue(true)
             findById(id)?.also {
                 insertOrUpdate(it.apply {
                     finished = false
                 })
             }
-            callback?.loadListNext()
+            isChanging.postValue(false)
         }
 
         fun bind(listObject: ListObject) {
             binding.title.text = listObject.title
             binding.deadLine.text = listObject.deadLine
-            binding.createdTime.text = listObject.createdTime.toString()
+            binding.createdTime.text = android.text.format.DateFormat.format("yyyy/mm/dd HH:mm:ss", listObject.createdTime)
             binding.memo.text = listObject.memo
             binding.finished.isEnabled  = listObject.finished
             binding.more.setOnClickListener {

@@ -6,10 +6,10 @@ import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 import java.util.*
 
-@Parcelize
-open class ListObject : RealmObject(),Parcelable {
+open class ListObject : RealmObject(),Serializable {
     @PrimaryKey
     var id = UUID.randomUUID().toString()
     @Required

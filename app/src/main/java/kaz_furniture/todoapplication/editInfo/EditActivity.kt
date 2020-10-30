@@ -27,7 +27,7 @@ class EditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-        val list = intent?.extras?.getParcelable<ListObject>(KEY) ?:return
+        val list = (intent.getSerializableExtra(KEY) as? ListObject) ?:return
         Timber.d("listObjectActivity:${list}")
         Timber.d("listObject.titleActivity:${list.title}")
 

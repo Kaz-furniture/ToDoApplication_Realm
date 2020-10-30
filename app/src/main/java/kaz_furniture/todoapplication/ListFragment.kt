@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.realm.Realm
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.realm.RealmResults
 import kaz_furniture.todoapplication.addInfo.AddActivity
@@ -30,6 +31,8 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
             return ListFragment()
         }
     }
+
+    private val viewModel: ListViewModel by activityViewModels()
 
     private fun loadList(toDoList: ArrayList<ListObject>) {
         binding?.swipeRefresh?.isRefreshing =true

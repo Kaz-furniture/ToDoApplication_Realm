@@ -20,11 +20,11 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     companion object{
         val TAG = EditFragment::class.java.simpleName
         private var listObject :ListObject? = null
-        private const val KEYFragment = "keyFragment"
+        private const val KEYFRAGMENT = "keyFragment"
 
         fun newInstance(listObject: ListObject) : EditFragment {
             val args = Bundle().apply {
-                putParcelable(KEYFragment, listObject)
+                putSerializable(KEYFRAGMENT, listObject)
             }
             return EditFragment().apply {
                 arguments = args
@@ -42,7 +42,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireArguments().also {
-            listObject = it.getParcelable(KEYFragment)
+            listObject = (it.getSerializable(KEYFRAGMENT) as? ListObject) ?:ListObject()
             Timber.d("listObject:${listObject}")
             Timber.d("listObject.title:${listObject?.title}")
         }

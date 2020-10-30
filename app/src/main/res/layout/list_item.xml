@@ -20,13 +20,14 @@
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:paddingBottom="2dp"
-            android:paddingStart="5dp"
-            android:paddingLeft="5dp"
-            android:paddingEnd="5dp"
-            android:paddingRight="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:paddingBottom="4dp"
+            android:paddingStart="4dp"
+            android:paddingLeft="4dp"
+            android:paddingEnd="4dp"
+            android:paddingRight="4dp"
             android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
             tools:text="TITLE"/>
@@ -37,11 +38,11 @@
             android:id="@+id/finished"
             app:layout_constraintEnd_toStartOf="@id/more"
             android:text="FINISHED"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:textSize="20sp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:textColor="@color/color_selector"
             />
 
@@ -51,8 +52,8 @@
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/title"
             android:id="@+id/dead_line"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             tools:text="〆切 : 00:00:00"
             android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
@@ -61,28 +62,43 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/created_time"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dead_line"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
             tools:text="作成日時 : 00:00:00"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/memoDisplay"
+            android:text="備考："
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/created_time"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/color_selector"
+            />
 
         <TextView
             android:id="@+id/memo"
             android:textSize="18sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/memoDisplay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/created_time"
             tools:text="this is memo.this is memo.this is memo.this is memo.this is memo."
-            android:layout_marginStart="30dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
@@ -93,9 +109,9 @@
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp" />
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
