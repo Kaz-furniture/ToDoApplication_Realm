@@ -1,10 +1,16 @@
 package kaz_furniture.todoapplication
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ListView
 import android.widget.PopupMenu
+import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import kaz_furniture.todoapplication.databinding.ListItemBinding
@@ -16,13 +22,15 @@ import kotlin.collections.ArrayList
 class ToDoListAdapter (
     private val layoutInflater: LayoutInflater,
     private val toDoList: ArrayList<ListObject>,
-    private val callback: Callback?
+    private val callback: Callback?,
+    private val context: Context
 ) :RecyclerView.Adapter<ToDoListAdapter.ViewHolder>() {
+
+    val viewModel : ListViewModel by (context as ComponentActivity).viewModels()
 
     interface Callback {
         fun loadListNext()
         fun openEdit(listObject: ListObject)
-        fun requestUpdate()
     }
 
     override fun getItemCount() = toDoList.size
@@ -33,7 +41,7 @@ class ToDoListAdapter (
             parent,
             false
         )
-        return ViewHolder(binding,callback)
+        return ViewHolder(binding,callback, viewModel)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -42,7 +50,8 @@ class ToDoListAdapter (
 
     class ViewHolder(
         private val binding: ListItemBinding,
-        private val callback: Callback?
+        private val callback: Callback?,
+        private val viewModel: ListViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val isChanging = MutableLiveData<Boolean>(false)
@@ -70,7 +79,7 @@ class ToDoListAdapter (
                 })
             }
             isChanging.postValue(false)
-            callback?.requestUpdate()
+            viewModel.updateData()
         }
 
         private fun finished(id: String) {
@@ -91,7 +100,7 @@ class ToDoListAdapter (
                 })
             }
             isChanging.postValue(false)
-            callback?.requestUpdate()
+            viewModel.updateData()
         }
 
         fun bind(listObject: ListObject) {

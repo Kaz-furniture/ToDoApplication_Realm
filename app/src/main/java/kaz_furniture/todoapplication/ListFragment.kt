@@ -45,7 +45,7 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ToDoListAdapter(layoutInflater, toDoList, this)
+        adapter = ToDoListAdapter(layoutInflater, toDoList, this, requireActivity())
 
         loadList(toDoList)
         layoutManager = LinearLayoutManager(
@@ -86,10 +86,6 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
     override fun openEdit(listObject: ListObject) {
         val intent = EditActivity.newIntent(requireContext(),listObject)
         startActivity(intent)
-    }
-
-    override fun requestUpdate() {
-        viewModel.updateData()
     }
 
     private fun read(): List<ListObject> =

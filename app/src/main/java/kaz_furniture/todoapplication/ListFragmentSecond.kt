@@ -42,7 +42,7 @@ class ListFragmentSecond: Fragment(R.layout.fragment_second_list), ToDoListAdapt
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ToDoListAdapter(layoutInflater, toDoList, this)
+        adapter = ToDoListAdapter(layoutInflater, toDoList, this, requireActivity())
 
         loadList(toDoList)
         layoutManager = LinearLayoutManager(
@@ -81,10 +81,6 @@ class ListFragmentSecond: Fragment(R.layout.fragment_second_list), ToDoListAdapt
     override fun openEdit(listObject: ListObject) {
         val intent = EditActivity.newIntent(requireContext(),listObject)
         startActivity(intent)
-    }
-
-    override fun requestUpdate() {
-        viewModel.updateData()
     }
 
     private fun read(): List<ListObject> =
