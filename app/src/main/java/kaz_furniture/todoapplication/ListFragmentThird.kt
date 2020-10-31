@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.realm.Realm
 import kaz_furniture.todoapplication.addInfo.AddActivity
@@ -19,6 +21,8 @@ class ListFragmentThird: Fragment(R.layout.fragment_third_list), ToDoListAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
     private val toDoList = ArrayList<ListObject>()
+
+    private val viewModel: ListViewModel by activityViewModels()
 
     companion object {
         private const val REQUEST_CODE_ADD = 1000
@@ -61,6 +65,13 @@ class ListFragmentThird: Fragment(R.layout.fragment_third_list), ToDoListAdapter
         bindingData.fab.setOnClickListener{
             launchAddActivity()
         }
+
+        viewModel.items.observe(viewLifecycleOwner, Observer {
+            toDoList.apply {
+                clear()
+                addAll(it.filter { it.finished })
+            }
+        })
     }
 
     override fun loadListNext() {
@@ -70,6 +81,10 @@ class ListFragmentThird: Fragment(R.layout.fragment_third_list), ToDoListAdapter
     override fun openEdit(listObject: ListObject) {
         val intent = EditActivity.newIntent(requireContext(),listObject)
         startActivity(intent)
+    }
+
+    override fun requestUpdate() {
+        viewModel.updateData()
     }
 
     private fun read(): List<ListObject> =

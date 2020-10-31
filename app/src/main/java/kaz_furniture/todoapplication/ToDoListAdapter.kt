@@ -22,6 +22,7 @@ class ToDoListAdapter (
     interface Callback {
         fun loadListNext()
         fun openEdit(listObject: ListObject)
+        fun requestUpdate()
     }
 
     override fun getItemCount() = toDoList.size
@@ -69,7 +70,7 @@ class ToDoListAdapter (
                 })
             }
             isChanging.postValue(false)
-//            callback?.loadListNext()
+            callback?.requestUpdate()
         }
 
         private fun finished(id: String) {
@@ -90,6 +91,7 @@ class ToDoListAdapter (
                 })
             }
             isChanging.postValue(false)
+            callback?.requestUpdate()
         }
 
         fun bind(listObject: ListObject) {
