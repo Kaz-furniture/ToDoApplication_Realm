@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 interface ResourceStore {
     companion object {
         val tabList = listOf(
-            "all", "todo", "finished"
+            "all", "todo", "finished", "sort"
         )
         val pagerFragments:List<Fragment> = listOf(
-            ListFragment.create(), ListFragmentSecond.create(), ListFragmentThird.create())
+            ListFragment.create(), ListFragmentSecond.create(), ListFragmentThird.create(), SettingFragment.create())
     }
 }

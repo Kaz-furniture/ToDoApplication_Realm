@@ -73,16 +73,7 @@ class ToDoListAdapter (
         private fun finished(id: String) {
             findById(id)?.also {
                 insertOrUpdate(it.apply {
-                    finished = true
-                })
-            }
-            callback?.requestUpdate()
-        }
-
-        private fun reDo(id: String) {
-            findById(id)?.also {
-                insertOrUpdate(it.apply {
-                    finished = false
+                    finished = !finished
                 })
             }
             callback?.requestUpdate()
@@ -109,7 +100,6 @@ class ToDoListAdapter (
                             R.id.menu_delete -> delete(listObject.id)
                             R.id.menu_edit -> callback?.openEdit(listObject)
                             R.id.menu_finished -> finished(listObject.id)
-                            R.id.menu_reDo -> reDo(listObject.id)
                         }
                         return@setOnMenuItemClickListener true
                     }

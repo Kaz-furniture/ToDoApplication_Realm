@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import io.realm.Sort
 import kaz_furniture.todoapplication.ToDoApplication.Companion.applicationContext
 import kaz_furniture.todoapplication.addInfo.AddActivity
 import kaz_furniture.todoapplication.databinding.FragmentToDoListBinding
 import kaz_furniture.todoapplication.editInfo.EditActivity
+import timber.log.Timber
 
 class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Callback {
     private var binding : FragmentToDoListBinding? = null
@@ -25,7 +27,6 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
 
     private val toDoList = ArrayList<ListObject>()
 
-    lateinit var mAdView : AdView
     companion object {
         private const val REQUEST_CODE_ADD = 1000
         private const val REQUEST_CODE_EDIT = 1001
@@ -34,11 +35,52 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
         }
     }
 
+    private var sortByInt = 0
+
     private val viewModel: ListViewModel by activityViewModels()
 
     private fun loadList(toDoList: ArrayList<ListObject>) {
         binding?.swipeRefresh?.isRefreshing =true
-        val fetchedList = read()
+        toDoList.clear()
+        val fetchedList = when (sortByInt) {
+            0 -> {
+                Realm.getDefaultInstance().use { realm->
+                    realm.where(ListObject::class.java)
+                        .isNull(ListObject::deletedAt.name)
+                        .findAll()
+                        .sort("createdTime", Sort.DESCENDING)
+                        .let { realm.copyFromRealm(it) }
+                }
+            }
+            1 -> {
+                Realm.getDefaultInstance().use { realm->
+                    realm.where(ListObject::class.java)
+                        .isNull(ListObject::deletedAt.name)
+                        .findAll()
+                        .sort("createdTime")
+                        .let { realm.copyFromRealm(it) }
+                }
+            }
+            2 -> {
+                Realm.getDefaultInstance().use { realm->
+                    realm.where(ListObject::class.java)
+                        .isNull(ListObject::deletedAt.name)
+                        .findAll()
+                        .sort("deadLine", Sort.DESCENDING)
+                        .let { realm.copyFromRealm(it) }
+                }
+            }
+            3 -> {
+                Realm.getDefaultInstance().use { realm->
+                    realm.where(ListObject::class.java)
+                        .isNull(ListObject::deletedAt.name)
+                        .findAll()
+                        .sort("createdTime")
+                        .let { realm.copyFromRealm(it) }
+                }
+            }
+            else -> return
+        }
         toDoList.addAll(fetchedList)
         adapter.notifyDataSetChanged()
         binding?.swipeRefresh?.isRefreshing =false
@@ -63,7 +105,6 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
             it.adapter = adapter
         }
         bindingData.swipeRefresh.setOnRefreshListener {
-            toDoList.clear()
             loadList(toDoList)
         }
 
@@ -71,14 +112,15 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
             launchAddActivity()
         }
         viewModel.items.observe(viewLifecycleOwner, Observer {
-            toDoList.clear()
             loadList(toDoList)
         })
-
+        viewModel.sortByInt.observe(viewLifecycleOwner, Observer {
+            sortByInt = it
+            loadList(toDoList)
+        })
     }
 
     override fun loadListNext() {
-        toDoList.clear()
         loadList(toDoList)
     }
 
@@ -91,13 +133,14 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
         startActivityForResult(intent, REQUEST_CODE_EDIT)
     }
 
-    private fun read(): List<ListObject> =
-        Realm.getDefaultInstance().use { realm->
-            realm.where(ListObject::class.java)
-            .isNull(ListObject::deletedAt.name)
-            .findAll()
-            .let { realm.copyFromRealm(it) }
-        }
+//    private fun read(): List<ListObject> =
+//        Realm.getDefaultInstance().use { realm->
+//            realm.where(ListObject::class.java)
+//            .isNull(ListObject::deletedAt.name)
+//            .findAll()
+////            .sort("createdTime", Sort.DESCENDING)
+//            .let { realm.copyFromRealm(it) }
+//        }
 
     private fun launchAddActivity() {
         val intent = AddActivity.newIntent(requireContext())

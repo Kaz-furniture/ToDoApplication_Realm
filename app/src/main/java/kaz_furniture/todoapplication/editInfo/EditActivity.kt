@@ -6,6 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import kaz_furniture.todoapplication.ListObject
 import kaz_furniture.todoapplication.R
 import timber.log.Timber
