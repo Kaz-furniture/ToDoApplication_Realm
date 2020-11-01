@@ -1,11 +1,8 @@
 package kaz_furniture.todoapplication.addInfo
 
-import android.app.Application
 import androidx.lifecycle.*
 import io.realm.Realm
 import kaz_furniture.todoapplication.ListObject
-import kotlinx.coroutines.CoroutineScope
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddViewModel : ViewModel() {
@@ -14,9 +11,7 @@ class AddViewModel : ViewModel() {
     val title = MutableLiveData<String>().apply {
         value=""
     }
-    val deadTime = MutableLiveData<String>().apply {
-        value=""
-    }
+    var deadTime = Calendar.getInstance()
     val memo = MutableLiveData<String>()
 
     val createComplete = MutableLiveData<Boolean>()
@@ -27,11 +22,7 @@ class AddViewModel : ViewModel() {
             errorMessage.postValue("タイトルが入力されていません")
             return
         }
-        val deadTimeSnapshot = deadTime.value ?:return
-        if (deadTimeSnapshot.isBlank()) {
-            errorMessage.postValue("〆切日時が入力されていません")
-            return
-        }
+        val deadTimeSnapshot = deadTime.time ?:return
         val memoSnapshot = memo.value ?: "特になし"
 
         Realm.getDefaultInstance().executeTransaction{
@@ -44,6 +35,7 @@ class AddViewModel : ViewModel() {
         }
         createComplete.postValue(true)
     }
+
 
 //    private fun completelyDelete(id: String) {
 //        Realm.getDefaultInstance().executeTransaction {

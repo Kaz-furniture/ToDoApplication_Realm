@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -17,7 +18,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textSize="28sp"
             android:text="タイトル"
             android:id="@+id/title"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,36 +41,53 @@
             android:layout_marginEnd="10dp" />
 
         <TextView
+            android:textColor="#000000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="〆切日時"
+            android:textSize="24sp"
+            android:text="〆切日"
             android:id="@+id/dead_line"
             app:layout_constraintTop_toBottomOf="@id/title_input"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="32dp"
             android:layout_marginStart="10dp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dead_line_input"
-            android:layout_width="match_parent"
+
+        <Button
+            android:id="@+id/date_button"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="入力"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toEndOf="@id/dead_line"
+            app:layout_constraintTop_toBottomOf="@id/title_input"
+            />
+
+        <TextView
+            android:id="@+id/date_display"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="〆切日時を入力"
-            android:text="@={viewModel.deadTime}"
-            app:layout_constraintTop_toBottomOf="@+id/dead_line"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@id/date_button"
+            app:layout_constraintBottom_toBottomOf="@id/dead_line"
+            android:textSize="20sp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
+            tools:text="2020/11/01"/>
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:text="備考"
             android:id="@+id/memo"
-            app:layout_constraintTop_toBottomOf="@id/dead_line_input"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_button"
+            android:textColor="#000000"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="30dp"
             android:layout_marginStart="10dp" />
@@ -80,11 +99,10 @@
             android:hint="備考を入力（任意）"
             android:text="@={viewModel.memo}"
             app:layout_constraintTop_toBottomOf="@+id/memo"
+            android:textSize="20sp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginEnd="10dp"/>
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

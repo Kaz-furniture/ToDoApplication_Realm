@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -35,6 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:backgroundTint="#e9967a"
             android:src="@drawable/ic_baseline_post_add_24" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

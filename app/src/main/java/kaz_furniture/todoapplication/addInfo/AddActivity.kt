@@ -4,18 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import io.realm.Realm
-import io.realm.RealmConfiguration
-import kaz_furniture.todoapplication.ListObject
 import kaz_furniture.todoapplication.R
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AddActivity : AppCompatActivity(),AddFragment.Callback {
     companion object{

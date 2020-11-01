@@ -6,49 +6,58 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.datetime.dateTimePicker
 import kaz_furniture.todoapplication.ListObject
 import kaz_furniture.todoapplication.R
 import kaz_furniture.todoapplication.databinding.FragmentEditBinding
-import kaz_furniture.todoapplication.databinding.FragmentToDoListBinding
 import timber.log.Timber
+import java.util.*
 
 class EditFragment : Fragment(R.layout.fragment_edit) {
     companion object{
         val TAG = EditFragment::class.java.simpleName
-        private var listObject :ListObject? = null
-        private const val KEYFRAGMENT = "keyFragment"
+        private var listObject: ListObject = ListObject()
+        private const val KEY_FRAGMENT = "keyFragment"
 
         fun newInstance(listObject: ListObject) : EditFragment {
             val args = Bundle().apply {
-                putSerializable(KEYFRAGMENT, listObject)
+                putSerializable(KEY_FRAGMENT, listObject)
             }
             return EditFragment().apply {
                 arguments = args
             }
         }
     }
+
+    interface Callback {
+        fun editCompleted()
+    }
     private lateinit var title: String
-    private lateinit var deadLine: String
+    private lateinit var deadLine: CharSequence
     private lateinit var memo:String
 
     private var binding : FragmentEditBinding? = null
+
+    private var callback: Callback? = null
 
     private val viewModel: EditViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireArguments().also {
-            listObject = (it.getSerializable(KEYFRAGMENT) as? ListObject) ?:ListObject()
+            listObject = (it.getSerializable(KEY_FRAGMENT) as? ListObject) ?:ListObject()
             Timber.d("listObject:${listObject}")
-            Timber.d("listObject.title:${listObject?.title}")
+            Timber.d("listObject.title:${listObject.title}")
         }
-        title = listObject?.title ?:return
-        deadLine = listObject?.deadLine ?:return
-        memo = listObject?.memo ?:return
+        title = listObject.title
+        deadLine = android.text.format.DateFormat.format(getString(R.string.date_format3), listObject.deadLine)
+        memo = listObject.memo
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,13 +66,31 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         binding = bindingData ?:return
         binding?.viewModel = viewModel
         binding?.exTitle?.text = title
-        binding?.exDeadLine?.text = deadLine
         binding?.exMemo?.text = memo
+        binding?.dateButton?.setOnClickListener {
+            MaterialDialog(this.requireContext()).show {
+                dateTimePicker(requireFutureDateTime = true)  { _, dateTime ->
+                    deadLine = android.text.format.DateFormat.format(getString(R.string.date_format3), dateTime.time)
+                    viewModel.reDeadTime = dateTime.time
+                    binding?.dateDisplay?.text = deadLine
+                }
+            }
+        }
+        binding?.dateDisplay?.text = deadLine
+        viewModel.isEditing.observe(viewLifecycleOwner, Observer {
+            if (it == false) {
+                callback?.editCompleted()
+                Toast.makeText(requireContext(),"編集できました", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
+        if (context is Callback) {
+            callback = context
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -4,40 +4,39 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.realm.Realm
 import kaz_furniture.todoapplication.ListObject
+import java.time.LocalDate
 import java.util.*
 
 class EditViewModel : ViewModel() {
+
+    val isEditing = MutableLiveData<Boolean>()
 
     val reTitle = MutableLiveData<String>().apply {
         value = ""
     }
 
-    val reDeadTime = MutableLiveData<String>().apply {
-        value = ""
-    }
+    var reDeadTime: Date = Date()
 
     val reMemo = MutableLiveData<String>().apply {
         value = ""
     }
 
     fun reCreate(id: String?) {
+        isEditing.postValue(true)
         findById(id)?.also {
             insertOrUpdate(it.apply {
                 val reTitleSnapshot = reTitle.value ?:return
                 if (reTitleSnapshot.isNotBlank()) {
                     title = reTitleSnapshot
                 }
-                val reDeadTimeSnapshot = reDeadTime.value ?:return
-                if (reDeadTimeSnapshot.isNotBlank()) {
-                    deadLine = reDeadTimeSnapshot
-                }
+                deadLine = reDeadTime ?:return
                 val reMemoSnapshot = reMemo.value ?:return
                 if (reMemoSnapshot.isNotBlank()) {
                     memo = reMemoSnapshot
                 }
             })
         }
-        
+        isEditing.postValue(false)
     }
 
     private fun insertOrUpdate(data: ListObject) {
@@ -54,5 +53,4 @@ class EditViewModel : ViewModel() {
                 .findFirst()
                 ?.let { realm.copyFromRealm(it) }
         }
-
 }

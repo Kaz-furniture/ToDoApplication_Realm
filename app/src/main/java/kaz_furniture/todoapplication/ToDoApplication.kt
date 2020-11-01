@@ -2,8 +2,8 @@ package kaz_furniture.todoapplication
 
 import android.app.Application
 import android.content.Context
+import androidx.multidex.MultiDex
 import io.realm.Realm
-import io.realm.RealmConfiguration
 import timber.log.Timber
 
 class ToDoApplication : Application() {
@@ -12,6 +12,11 @@ class ToDoApplication : Application() {
         ToDoApplication.applicationContext = applicationContext
         Realm.init(this)
         initialize()
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     private fun initialize() {

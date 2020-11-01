@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#fff0f5"
     android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
@@ -13,6 +14,7 @@
         app:tabMode="fixed"
         app:tabMaxWidth="0dp"
         app:tabIndicatorColor="@android:color/black"
+        android:layout_alignParentTop="true"
         app:tabIndicatorHeight="5dp"
         android:background="#ffc7af"
         app:tabSelectedTextColor="@android:color/holo_red_light"
@@ -20,7 +22,22 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
+        android:layout_below="@id/tabs"
+        android:layout_above="@id/adView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:foregroundGravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+    </com.google.android.gms.ads.AdView>
+
+</RelativeLayout>

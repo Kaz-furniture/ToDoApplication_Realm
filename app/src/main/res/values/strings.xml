@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">To Do Application</string>
+
+    <string name="date_format1">作成：yyyy/M/d kk:mm</string>
+    <string name="date_format2">M月d日 k:mm</string>
+    <string name="date_format3">yyyy/M/d kk:mm</string>
 </resources>

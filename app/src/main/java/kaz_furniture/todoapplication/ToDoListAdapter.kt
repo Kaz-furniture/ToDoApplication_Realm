@@ -1,15 +1,15 @@
 package kaz_furniture.todoapplication
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
+import kaz_furniture.todoapplication.ToDoApplication.Companion.applicationContext
 import kaz_furniture.todoapplication.databinding.ListItemBinding
-import kaz_furniture.todoapplication.editInfo.EditActivity
-import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -22,6 +22,7 @@ class ToDoListAdapter (
     interface Callback {
         fun loadListNext()
         fun openEdit(listObject: ListObject)
+        fun requestUpdate()
     }
 
     override fun getItemCount() = toDoList.size
@@ -44,8 +45,6 @@ class ToDoListAdapter (
         private val callback: Callback?
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private val isChanging = MutableLiveData<Boolean>(false)
-
         private fun insertOrUpdate(data: ListObject) {
             Realm.getDefaultInstance().executeTransaction {
                 it.insertOrUpdate(data)
@@ -62,42 +61,43 @@ class ToDoListAdapter (
             }
 
         private fun delete(id: String) {
-            isChanging.postValue(true)
             findById(id)?.also {
                 insertOrUpdate(it.apply {
                     deletedAt = Date()
                 })
             }
-            isChanging.postValue(false)
+            callback?.requestUpdate()
 //            callback?.loadListNext()
         }
 
         private fun finished(id: String) {
-            isChanging.postValue(true)
             findById(id)?.also {
                 insertOrUpdate(it.apply {
                     finished = true
                 })
             }
-            isChanging.postValue(false)
+            callback?.requestUpdate()
         }
 
         private fun reDo(id: String) {
-            isChanging.postValue(true)
             findById(id)?.also {
                 insertOrUpdate(it.apply {
                     finished = false
                 })
             }
-            isChanging.postValue(false)
+            callback?.requestUpdate()
+        }
+
+        fun View.visibleOrGone(iaVisible: Boolean) {
+            visibility = if (isVisible) View.VISIBLE else View.GONE
         }
 
         fun bind(listObject: ListObject) {
             binding.title.text = listObject.title
-            binding.deadLine.text = listObject.deadLine
-            binding.createdTime.text = android.text.format.DateFormat.format("yyyy/mm/dd HH:mm:ss", listObject.createdTime)
+            binding.deadLine.text = android.text.format.DateFormat.format(applicationContext.getString(R.string.date_format2), listObject.deadLine)
+            binding.createdTime.text = android.text.format.DateFormat.format(applicationContext.getString(R.string.date_format1), listObject.createdTime)
             binding.memo.text = listObject.memo
-            binding.finished.isEnabled  = listObject.finished
+            binding.finished.isVisible= listObject.finished
             binding.more.setOnClickListener {
                 PopupMenu(itemView.context, it).also {  popupMenu ->
                     popupMenu.menuInflater.inflate(

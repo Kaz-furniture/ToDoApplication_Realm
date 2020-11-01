@@ -1,11 +1,8 @@
 package kaz_furniture.todoapplication
 
-import android.os.Parcelable
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 import java.util.*
 
@@ -17,7 +14,7 @@ open class ListObject : RealmObject(),Serializable {
     @Required
     var memo = ""
     @Required
-    var deadLine = ""
+    var deadLine :Date? = null
 
     var deletedAt : Date? = null
 
