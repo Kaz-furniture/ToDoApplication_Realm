@@ -1,5 +1,6 @@
 package kaz_furniture.todoapplication
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -26,15 +27,19 @@ class SettingFragment: Fragment(R.layout.fragment_setting) {
 
         binding?.sortCreatedButton?.setOnClickListener {
             viewModel.sortByInt.postValue(0)
+            viewModel.saveSetting(0)
         }
         binding?.sortRecreatedButton?.setOnClickListener {
             viewModel.sortByInt.postValue(1)
+            viewModel.saveSetting(1)
         }
         binding?.sortDeadButton?.setOnClickListener {
             viewModel.sortByInt.postValue(2)
+            viewModel.saveSetting(2)
         }
         binding?.sortRedeadButton?.setOnClickListener {
             viewModel.sortByInt.postValue(3)
+            viewModel.saveSetting(3)
         }
         viewModel.sortByInt.observe(viewLifecycleOwner, Observer {
             binding?.imageView1?.isVisible = false
@@ -52,6 +57,7 @@ class SettingFragment: Fragment(R.layout.fragment_setting) {
     fun View.visibleOrGone(iaVisible: Boolean) {
         visibility = if (isVisible) View.VISIBLE else View.GONE
     }
+
 
     companion object {
         fun create(): SettingFragment {

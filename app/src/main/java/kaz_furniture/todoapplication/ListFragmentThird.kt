@@ -31,9 +31,9 @@ class ListFragmentThird: Fragment(R.layout.fragment_third_list), ToDoListAdapter
         }
     }
 
-    private var sortByInt = 0
-
     private val viewModel: ListViewModel by activityViewModels()
+
+    private var sortByInt = viewModel.sortByInt.value
 
     private fun loadList(toDoList: ArrayList<ListObject>) {
         binding?.swipeRefresh?.isRefreshing =true
