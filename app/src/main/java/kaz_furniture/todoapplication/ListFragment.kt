@@ -37,11 +37,10 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
 
     private val viewModel: ListViewModel by activityViewModels()
 
-    private var sortByInt = viewModel.sortByInt.value
-
     private fun loadList(toDoList: ArrayList<ListObject>) {
         binding?.swipeRefresh?.isRefreshing =true
         toDoList.clear()
+        var sortByInt = viewModel.sortByInt.value
         val fetchedList = when (sortByInt) {
             0 -> {
                 Realm.getDefaultInstance().use { realm->
@@ -75,7 +74,7 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
                     realm.where(ListObject::class.java)
                         .isNull(ListObject::deletedAt.name)
                         .findAll()
-                        .sort("createdTime")
+                        .sort("deadLine")
                         .let { realm.copyFromRealm(it) }
                 }
             }
@@ -115,7 +114,6 @@ class ListFragment : Fragment(R.layout.fragment_to_do_list), ToDoListAdapter.Cal
             loadList(toDoList)
         })
         viewModel.sortByInt.observe(viewLifecycleOwner, Observer {
-            sortByInt = it
             loadList(toDoList)
         })
     }

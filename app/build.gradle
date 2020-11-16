@@ -18,15 +18,37 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         multiDexEnabled true
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
+        def properties = new Properties()
+        properties.load(project.rootProject.file('key.properties').newDataInputStream())
         release {
-            minifyEnabled false
+            storeFile file('./keystore/toDoApp.jks')
+            storePassword properties.getProperty("storePassword")
+            keyAlias properties.getProperty("releaseKeyAlias")
+            keyPassword properties.getProperty("releaseKeyPassword")
+        }
+        debug {
+            storeFile file('./keystore/toDoApp.jks')
+            storePassword properties.getProperty("storePassword")
+            keyAlias properties.getProperty("debugKeyAlias")
+            keyPassword properties.getProperty("debugKeyPassword")
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
